@@ -87,17 +87,23 @@ export default function Game() {
   }
 
   const moves = history.map((squares, move) => {
+    const prevSquares = history[move - 1] || [];
+    const changedIndex = squares.findIndex((square, index) => square !== prevSquares[index]);
+    const row = Math.floor(changedIndex / 3);
+    const col = changedIndex % 3;
+    const rowCol = `(Row: ${row + 1}, Col: ${col + 1})`
+
     if (move === currentMove) {
       return (
         <li key={move}>
-          <b>{"You are at move #" + move}</b>
+          <b>{"You are at move #" + move + ' ' + (move === 0 ? '' : rowCol)}</b>
         </li>
       );
     }
 
     let description;
     if (move > 0) {
-      description = 'Go to move #' + move;
+      description = `Go to move #${move} ${rowCol}`;
     } else {
       description = 'Go to game start';
     }
